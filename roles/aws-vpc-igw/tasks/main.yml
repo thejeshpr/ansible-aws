@@ -8,7 +8,7 @@
 
 - name: Create IGW
   ec2_vpc_igw:
-      vpc_id: "{{ vpcs[0].id }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
       tags: 
         Name: "{{ vpc_name }}_igw"
       region: "{{ region }}"

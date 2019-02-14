@@ -9,7 +9,7 @@
 - name: Create Subnets
   ec2_vpc_subnet:
     state: present
-    vpc_id: "{{ vpcs[0].id }}"
+    vpc_id: "{{ vpc.vpcs[0].id }}"
     region: "{{ region }}"
     az: "{{ region }}{{ item.az }}"
     cidr: "{{ item.cidr }}"
