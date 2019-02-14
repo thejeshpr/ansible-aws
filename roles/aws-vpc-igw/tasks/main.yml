@@ -1,0 +1,15 @@
+---
+- name: Get VPC ID
+  ec2_vpc_net_facts:            
+      region: "{{ region }}"
+      filters:
+        "tag:Name": "{{ vpc_name }}"
+  register: vpc
+
+- name: Create IGW
+  ec2_vpc_igw:
+      vpc_id: "{{ vpcs[0].id }}"
+      tags: 
+        Name: "{{ vpc_name }}_igw"
+      region: "{{ region }}"
+      state: present      
