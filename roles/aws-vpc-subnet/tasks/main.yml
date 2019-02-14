@@ -1,0 +1,23 @@
+---
+- name: Get VPC ID
+  ec2_vpc_net_facts:            
+      region: "{{ region }}"
+      filters:
+        "tag:Name": "{{ vpc_name }}"
+  register: vpc
+
+- name: Create Subnets
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ vpcs[0].id }}"
+    region: "{{ region }}"
+    az: "{{ region }}{{ item.az }}"
+    cidr: "{{ item.cidr }}"
+    tags:
+      Name: "{{ vpc_name }}-{{ item.name }}"
+      stage: testing
+    wait : yes      
+  loop:
+    - { name: 'private', cidr: '10.10.0.0/24', az: 'a'}
+    - { name: 'public',  cidr: '10.10.1.0/24', az: 'b'}
+  register: subnets
