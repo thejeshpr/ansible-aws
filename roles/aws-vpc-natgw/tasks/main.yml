@@ -1,0 +1,16 @@
+---
+- name: Get Public Subnet details
+  ec2_vpc_subnet_facts:      
+      region: "{{ region }}"
+      filters: 
+        "tag:Name": "{{ vpc_name }}_public"
+  register: subnets
+
+- name: Create NAT GW
+  ec2_vpc_nat_gateway:                  
+      release_eip: yes
+      subnet_id: "{{ subnets.0.id }}"
+      region: "{{ region }}"
+      if_exist_do_not_create: true
+      state: present
+      wait: yes
